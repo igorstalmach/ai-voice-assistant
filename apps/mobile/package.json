@@ -1,12 +1,17 @@
 {
+  "private": true,
   "name": "mobile",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
+  "main": "../../node_modules/expo/AppEntry.js",
   "scripts": {
+    "dev": "expo start",
+    "lint": "eslint --ext js,ts,tsx .",
+    "build": "expo export --output-dir ./build --platform all",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "eas-build-post-install": "pnpm run -w build:mobile"
   },
   "dependencies": {
     "expo": "~50.0.8",
@@ -15,9 +20,8 @@
     "react-native": "0.73.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@types/react": "~18.2.45",
-    "typescript": "^5.1.3"
-  },
-  "private": true
+    "@babel/core": "^7.24.0",
+    "@types/react": "~18.2.61",
+    "typescript": "^5.3.3"
+  }
 }
