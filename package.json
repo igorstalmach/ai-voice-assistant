@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "pl-tts-gpt",
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@babel/*",
+        "expo-modules-*",
+        "typescript"
+      ]
+    }
+  },
+  "devDependencies": {
+    "turbo": "^1.12.4"
+  }
+}
