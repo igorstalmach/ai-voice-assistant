@@ -3,7 +3,7 @@ from fastapi import FastAPI, WebSocket, File
 app = FastAPI()
 
 @app.post("/speech")
-def speech(file: Annotated[bytes, File()]):
+async def speech(file: Annotated[bytes, File()]):
   return {"file_size": len(file)}
 
 @app.websocket("/ws")
