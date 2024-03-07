@@ -61,7 +61,6 @@ export default function RootLayout() {
       const res = await sendFile(uri);
 
       const fileSize = JSON.parse(res.body).file_size;
-      console.log('fileSize', fileSize);
       Speech.speak(`Wysłano plik o rozmiarze ${Math.floor(fileSize / 1000)} kilobajtów`, {
         language: 'pl',
         rate: 1,

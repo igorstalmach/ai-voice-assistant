@@ -28,7 +28,6 @@ export const useRecord = () => {
       allowsRecordingIOS: false,
     });
     const uri = recording?.getURI();
-    // TODO: remove this console.log in the future
     if (!uri) {
       throw new Error('No uri');
     }
