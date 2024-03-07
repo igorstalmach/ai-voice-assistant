@@ -2,7 +2,7 @@ import { Audio } from 'expo-av';
 import { useState } from 'react';
 
 export const useRecord = () => {
-  const [recording, setRecording] = useState<Audio.Recording | null>(null);
+  const [recording, setRecording] = useState<Audio.Recording>();
   const [permissionResponse, requestPermission] = Audio.usePermissions();
 
   const startRecording = async () => {
@@ -22,7 +22,7 @@ export const useRecord = () => {
   };
 
   const stopRecording = async (): Promise<string> => {
-    setRecording(null);
+    setRecording(undefined);
     await recording?.stopAndUnloadAsync();
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
