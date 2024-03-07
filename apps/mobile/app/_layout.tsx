@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Button, Text, SafeAreaView, StyleSheet, TextInput } from 'react-native';
 import * as Speech from 'expo-speech';
+import { useWebsocket, ws } from '../hooks/useWebsocket';
+import { useRecord } from '../hooks/useRecord';
+import { sendFile } from '../hooks/useFetch';
 
 const styles = StyleSheet.create({
   container: {
@@ -35,9 +38,12 @@ export default function RootLayout() {
     'pl-PL-language',
   ];
 
+  useWebsocket();
+  const { stopRecording, startRecording, recording } = useRecord();
+
   const speakNext = (index: number = 0) => {
     const voiceIdx = Math.floor(Math.random() * plVoices.length);
-    Speech.speak(inwokacja.split(' ')[index], {
+    Speech.speak(inwokacja.split('.')[index], {
       language: 'pl', // TODO: maybe add localization
       rate: 1,
       voice: plVoices[voiceIdx],
@@ -45,16 +51,24 @@ export default function RootLayout() {
     });
   };
 
-  useEffect(() => {
-    (async () => {
-      const voices = await Speech.getAvailableVoicesAsync();
-      const identifiers = voices.filter((v) => v.language === 'pl-PL').map((v) => v.identifier);
-      console.log(identifiers);
-    })();
-  }, []);
+  const sendMessage = () => {
+    ws.send('Hello');
+  };
 
-  const onTTS = () => {
-    speakNext();
+  const handleAudioPress = async () => {
+    if (recording) {
+      const uri = await stopRecording();
+      const res = await sendFile(uri);
+
+      const fileSize = JSON.parse(res.body).file_size;
+      Speech.speak(`Wysłano plik o rozmiarze ${Math.floor(fileSize / 1000)} kilobajtów`, {
+        language: 'pl',
+        rate: 1,
+        voice: plVoices[0],
+      });
+    } else {
+      startRecording();
+    }
   };
 
   return (
@@ -65,8 +79,11 @@ export default function RootLayout() {
         value={text}
         onChangeText={(e) => setText(e)}
       />
-      <Button title="DUPA" onPress={onTTS} />
+      <Button title="DUPA" onPress={() => speakNext()} />
       <Button title="Stop" onPress={() => Speech.stop()} />
+      <Button title="Send" onPress={sendMessage} />
+
+      <Button title={`${recording ? 'Stop' : 'Start'} recording`} onPress={handleAudioPress} />
     </SafeAreaView>
   );
 }
