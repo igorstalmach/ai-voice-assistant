@@ -5,7 +5,7 @@ import { TouchableWithoutFeedbackProps, TouchableWithoutFeedback } from 'react-n
 type MainButtonProps = {
   onStart?: () => void;
   onStop?: () => void;
-} & Pick<TouchableWithoutFeedbackProps, 'style'>;
+} & Pick<TouchableWithoutFeedbackProps, 'style' | 'onLongPress'>;
 
 export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   const animation = useRef<LottieView | null>(null);

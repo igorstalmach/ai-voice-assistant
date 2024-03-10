@@ -1,9 +1,6 @@
 from typing import Annotated
 from fastapi import File
-from openai import OpenAI
-import os
-
-client = OpenAI(api_key=os.environ.get("POETRY_OPENAI_API_KEY"))
+from . import client
 
 
 def speech_to_text(file: Annotated[bytes, File()]):
