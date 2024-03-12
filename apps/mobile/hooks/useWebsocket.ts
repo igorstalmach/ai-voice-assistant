@@ -5,11 +5,9 @@ if (!process.env.EXPO_PUBLIC_API_URL) {
 }
 export const ws = new WebSocket(`ws://${process.env.EXPO_PUBLIC_API_URL}/ws`);
 
-export const useWebsocket = () => {
+export const useWebsocket = (onMessage: (event: MessageEvent<string>) => void) => {
   useEffect(() => {
-    ws.onmessage = (event) => {
-      console.log(event.data);
-    };
+    ws.onmessage = onMessage;
 
     return () => {
       ws.close();

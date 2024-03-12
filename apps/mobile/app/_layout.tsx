@@ -1,89 +1,65 @@
-import { useEffect, useState } from 'react';
-import { Button, Text, SafeAreaView, StyleSheet, TextInput } from 'react-native';
 import * as Speech from 'expo-speech';
-import { useWebsocket, ws } from '../hooks/useWebsocket';
-import { useRecord } from '../hooks/useRecord';
+import { useRef } from 'react';
+import { Button, SafeAreaView, StyleSheet } from 'react-native';
+
+import { MainButton } from '../components';
 import { sendFile } from '../hooks/useFetch';
+import { useRecord } from '../hooks/useRecord';
+import { useWebsocket, ws } from '../hooks/useWebsocket';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingTop: 100,
     gap: 16,
   },
 });
 
-const inwokacja = `Litwo, Ojczyzno moja! ty jesteś jak zdrowie;
-Ile cię trzeba cenić, ten tylko się dowie,
-Kto cię stracił. Dziś piękność twą w całej ozdobie
-Widzę i opisuję, bo tęsknię po tobie.`;
+const useSentenceQueue = () => {
+  const sentence = useRef<string>('');
 
-export default function RootLayout() {
-  const [text, setText] = useState(inwokacja);
+  const add = (text: string) => {
+    sentence.current += text;
 
-  // https://docs.expo.dev/versions/latest/sdk/localization/
-  const plVoices = [
-    'pl-pl-x-oda-local',
-    'pl-pl-x-bmg-local',
-    'pl-pl-x-oda-network',
-    'pl-pl-x-afb-network',
-    'pl-pl-x-zfg-network',
-    'pl-pl-x-jmk-network',
-    'pl-pl-x-bmg-network',
-    'pl-pl-x-zfg-local',
-    'pl-pl-x-jmk-local',
-    'pl-pl-x-afb-local',
-    'pl-PL-language',
-  ];
+    if (!text.includes('.')) return;
 
-  useWebsocket();
-  const { stopRecording, startRecording, recording } = useRecord();
-
-  const speakNext = (index: number = 0) => {
-    const voiceIdx = Math.floor(Math.random() * plVoices.length);
-    Speech.speak(inwokacja.split('.')[index], {
+    Speech.speak(sentence.current, {
       language: 'pl', // TODO: maybe add localization
       rate: 1,
-      voice: plVoices[voiceIdx],
-      onDone: () => speakNext(index + 1),
+      voice: 'pl-pl-x-oda-local',
     });
+    sentence.current = '';
   };
 
-  const sendMessage = () => {
-    ws.send('Hello');
-  };
+  return { add };
+};
 
-  const handleAudioPress = async () => {
-    if (recording) {
-      const uri = await stopRecording();
-      const res = await sendFile(uri);
+export default function RootLayout() {
+  const { add } = useSentenceQueue();
 
-      const fileSize = JSON.parse(res.body).file_size;
-      Speech.speak(`Wysłano plik o rozmiarze ${Math.floor(fileSize / 1000)} kilobajtów`, {
-        language: 'pl',
-        rate: 1,
-        voice: plVoices[0],
-      });
-    } else {
-      startRecording();
-    }
+  useWebsocket((event) => {
+    add(event.data);
+  });
+
+  const { stopRecording, startRecording } = useRecord();
+
+  const onStopRecording = async () => {
+    const uri = await stopRecording();
+    const res = await sendFile(uri);
+
+    const transcription = JSON.parse(res.body).transcription;
+    ws.send(transcription);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Input: {text}</Text>
-      <TextInput
-        placeholder="Type here to translate!"
-        value={text}
-        onChangeText={(e) => setText(e)}
+      <MainButton
+        onStart={startRecording}
+        onStop={onStopRecording}
+        // TODO: probably change this as it's bad UX
+        onLongPress={() => Speech.stop()}
       />
-      <Button title="DUPA" onPress={() => speakNext()} />
-      <Button title="Stop" onPress={() => Speech.stop()} />
-      <Button title="Send" onPress={sendMessage} />
-
-      <Button title={`${recording ? 'Stop' : 'Start'} recording`} onPress={handleAudioPress} />
     </SafeAreaView>
   );
 }
