@@ -1,6 +1,6 @@
 import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
-import { TouchableWithoutFeedbackProps, TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedbackProps, Pressable } from 'react-native';
 
 type MainButtonProps = {
   onStart?: () => void;
@@ -26,7 +26,7 @@ export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={onPressHandler} {...props}>
+    <Pressable onPress={onPressHandler} {...props}>
       <LottieView
         ref={animation}
         style={{
@@ -38,6 +38,6 @@ export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
         renderMode="AUTOMATIC"
         source={require('../assets/speaking-animation.json')}
       />
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 if (!process.env.EXPO_PUBLIC_API_URL) {
-  throw new Error('Missing process.env.EXPO_PUBLIC_WS_URL');
+  throw new Error('Missing process.env.EXPO_PUBLIC_API_URL');
 }
 export const ws = new WebSocket(`ws://${process.env.EXPO_PUBLIC_API_URL}/ws`);
 

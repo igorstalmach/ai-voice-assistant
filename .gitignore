@@ -7,17 +7,19 @@ packages/*/build
 .turbo
 
 # Expo
-.expo
+.expo/
 __generated__
-web-build
+dist/
+web-build/
 
 # macOS
 .DS_Store
 
 # Node
 node_modules
-npm-debug.log
-yarn-error.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
 package-lock.json
 
 # Ruby
@@ -43,15 +45,10 @@ package-lock.json
 *.xcscmblueprint
 xcuserdata
 
-# Android Studio
+# JetBrains
 *.iml
 .gradle
-.idea/libraries
-.idea/workspace.xml
-.idea/gradle.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/vcs.xml
+.idea
 
 # Eclipse
 .project
@@ -60,3 +57,11 @@ xcuserdata
 # VSCode
 .history/
 .vscode/settings.json
+
+# Env files
+.env
+
+# Python
+.venv
+__pycache__
+.ruff_cache
