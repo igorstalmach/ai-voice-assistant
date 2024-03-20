@@ -1,6 +1,6 @@
 import * as Speech from 'expo-speech';
 import { useRef } from 'react';
-import { Button, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 
 import { MainButton } from '../components';
 import { sendFile } from '../hooks/useFetch';
