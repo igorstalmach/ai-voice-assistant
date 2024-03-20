@@ -4,27 +4,35 @@
 
 ## Installation
 
-The app consists of two parts: the backend and the frontend.
+The project is composed of two primary components: a cross-platform frontend service and a backend service.
 
-WIP
+In order to run both services execute the following commands in the project directory:
 
-### Backend (FastAPI)
+```bash
+docker-compose up --build
+```
 
-You must have [docker](https://docs.docker.com/get-docker/) installed to run the backend.
+Please keep in mind that a running instance of [Docker Engine 20.10+](https://docs.docker.com/) is required.
 
-`docker-compose build` to build the backend image.
-then
-`docker-compose up` to run the backend.
+After the services are up and running, you can access the frontend service by navigating to `localhost:8081` in your web browser of choice. Additionally, it can be accessed from a mobile device by navigating to `{ip}:8081`, where `ip` stands for the local IP address of the machine running the services.
 
-The project is set to run on port `8000`.
+### Backend 
 
-## Frontend (Expo)
+> [!NOTE]
+> In order to start the backend service, you need to set the `POETRY_OPENAI_API_KEY` environment variable with your OpenAI key. Please refer to provided `.env.example` file for more details. A valid environment file should be named `.env` and placed in the root directory of the project.
 
-We use [pnpm](https://pnpm.io/) for simplicity and speed in working with monorepos. Refer to [pnpm docs](https://pnpm.io/installation) for installation instructions.
+- Built with [FastAPI](https://fastapi.tiangolo.com/) and Python 3.12.
+- The service is available on port `8000`.
 
-since the app is mobile you have to set your local ip address in `EXPO_PUBLIC_API_URL` in `.env.local` file for development.
+### Frontend 
+> [!NOTE]
+> In order to start the frontend service, you need to set the `EXPO_PUBLIC_API_URL` environment variable with the address of your running backend service instance. Please refer to provided `.env.example` file for more details. A valid environment file should be named `.env` and placed in the root directory of the project.
 
-available pl voices in [expo-speech](https://docs.expo.dev/versions/latest/sdk/localization/) package
+
+- Built with [Expo](https://docs.expo.dev/) and TypeScript.
+- The service is available on port `8081`.
+
+Available polish voices in the [expo-speech](https://docs.expo.dev/versions/latest/sdk/localization/) package:
 
 - pl-pl-x-oda-local,
 - pl-pl-x-bmg-local,
@@ -38,8 +46,3 @@ available pl voices in [expo-speech](https://docs.expo.dev/versions/latest/sdk/l
 - pl-pl-x-afb-local,
 - pl-PL-language'
 
-### Docs (?)
-
-We may want to deploy the docs to github pages or smth.
-
-## WIP
