@@ -1,11 +1,11 @@
 import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
-import { TouchableWithoutFeedbackProps, Pressable } from 'react-native';
+import { Pressable, PressableProps } from 'react-native';
 
 type MainButtonProps = {
   onStart?: () => void;
   onStop?: () => void;
-} & Pick<TouchableWithoutFeedbackProps, 'style' | 'onLongPress'>;
+} & Pick<PressableProps, 'style' | 'onLongPress'>;
 
 export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   const animation = useRef<LottieView | null>(null);

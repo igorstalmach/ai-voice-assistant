@@ -9,6 +9,8 @@ COPY pnpm-lock.yaml .
 RUN npm install --global pnpm
 RUN pnpm install
 
+VOLUME ["/mobile/node_modules"]
+
 COPY . .
 
 EXPOSE 8081
