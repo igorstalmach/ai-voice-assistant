@@ -1,0 +1,7 @@
+node_modules
+.expo
+.env.example
+.eslintrc.js
+.prettierignore
+.prettierrc.js
+README.md
