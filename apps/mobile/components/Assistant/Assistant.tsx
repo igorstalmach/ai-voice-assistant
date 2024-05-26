@@ -1,12 +1,14 @@
-import { useSentenceQueue } from '../../../hooks/cross/useSentenceQueue';
-import { useRecord } from '../../../hooks/mobile/useRecord';
-import { useWebSocket, ws } from '../../../hooks/cross/useWebSocket';
-import { sendAudioFile } from '../../../api/sendAudioFile/mobile/sendAudioFile';
-import { MainButton } from '../../cross/MainButton';
-import * as Speech from 'expo-speech';
+import { useSentenceQueue } from '../../hooks/useSentenceQueue';
+import { useRecord } from '../../hooks/useRecord';
+import { useWebSocket, ws } from '../../hooks/useWebSocket';
 import Toast from 'react-native-toast-message';
+import { Platform } from 'react-native';
+import { sendAudioFile as sendAudioFileWeb } from '../../api/sendAudioFile/web/sendAudioFile';
+import { sendAudioFile as sendAudioFileMobile } from '../../api/sendAudioFile/mobile/sendAudioFile';
+import * as Speech from 'expo-speech';
+import { MainButton } from '../MainButton';
 
-export const MobileAssistant = () => {
+export const Assistant = () => {
   const { addSentence } = useSentenceQueue();
   const { stopRecording, startRecording } = useRecord();
 
@@ -26,7 +28,13 @@ export const MobileAssistant = () => {
       return;
     }
 
-    const transcription = await sendAudioFile(uri);
+    let transcription;
+
+    if (Platform.OS === 'web') {
+      transcription = await sendAudioFileWeb(uri);
+    } else {
+      transcription = await sendAudioFileMobile(uri);
+    }
 
     if (!transcription) {
       Toast.show({

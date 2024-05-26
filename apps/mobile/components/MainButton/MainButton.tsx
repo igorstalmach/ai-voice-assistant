@@ -31,7 +31,7 @@ export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
         }}
         loop
         renderMode="AUTOMATIC"
-        source={require('../../../assets/speaking-animation.json')}
+        source={require('../../assets/speaking-animation.json')}
       />
     </Pressable>
   );

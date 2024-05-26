@@ -1,21 +1,11 @@
-import { Platform, SafeAreaView, StyleSheet } from 'react-native';
-
+import { SafeAreaView, StyleSheet } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { WebAssistant } from '../components/web/WebAssistant/WebAssistant';
-import { MobileAssistant } from '../components/mobile/MobileAssistant/MobileAssistant';
+import { Assistant } from '../components/Assistant';
 
 export default function RootLayout() {
-  const getAssistant = () => {
-    if (Platform.OS === 'web') {
-      return <WebAssistant />;
-    } else {
-      return <MobileAssistant />;
-    }
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      {getAssistant()}
+      <Assistant />
       <Toast />
     </SafeAreaView>
   );
