@@ -1,5 +1,7 @@
 FROM python:3.12-slim-bullseye as python-base
 
+RUN apt-get update && apt-get install -y ffmpeg
+
 RUN mkdir api
 WORKDIR  /api
 

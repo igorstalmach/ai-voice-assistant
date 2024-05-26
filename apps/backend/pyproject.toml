@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = ""
-authors = ["Krystian Ogonowski <krystian@ogonowski.it>"]
+authors = ["Krystian Ogonowski <krystian@ogonowski.it>, Igor Stalmach <igorstalmach@outlook.com>"]
 readme = "README.md"
 package-mode = false
 
@@ -13,10 +13,14 @@ uvicorn = {extras = ["standard"], version = "^0.27.1"}
 websockets = "^12.0"
 python-multipart = "^0.0.9"
 openai = "^1.13.3"
-
+pydub = "^0.25.1"
+lpmn-client-biz = {version = "^2.1.7", source = "clarin"}
+aiofiles = "^23.2.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.2"
+black = "^24.4.2"
+isort = "^5.13.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -24,3 +28,11 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 target-version = "py312"
+
+[tool.isort]
+profile = "black"
+
+[[tool.poetry.source]]
+name = "clarin"
+url = "https://pypi.clarin-pl.eu/simple/"
+priority = 'primary'

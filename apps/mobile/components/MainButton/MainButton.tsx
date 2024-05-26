@@ -1,15 +1,11 @@
 import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
-import { Pressable, PressableProps } from 'react-native';
+import { Pressable } from 'react-native';
 
-type MainButtonProps = {
-  onStart?: () => void;
-  onStop?: () => void;
-} & Pick<PressableProps, 'style' | 'onLongPress'>;
+import { MainButtonProps } from './types';
 
 export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   const animation = useRef<LottieView | null>(null);
-
   const isPressed = useRef(false);
 
   const onPressHandler = () => {
@@ -26,17 +22,16 @@ export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   };
 
   return (
-    <Pressable onPress={onPressHandler} {...props}>
+    <Pressable
+      onPress={onPressHandler}
+      style={{ transform: 'scale(0.5)', position: 'absolute', bottom: -75 }}
+      {...props}
+    >
       <LottieView
         ref={animation}
-        style={{
-          width: 300,
-          height: 300,
-          backgroundColor: 'transparent',
-        }}
         loop
         renderMode="AUTOMATIC"
-        source={require('../assets/speaking-animation.json')}
+        source={require('../../assets/recording.json')}
       />
     </Pressable>
   );
