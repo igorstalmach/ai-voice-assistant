@@ -1,5 +1,6 @@
 import { SafeAreaView, StyleSheet } from 'react-native';
 import Toast from 'react-native-toast-message';
+
 import { Assistant } from '../components/Assistant';
 
 export default function RootLayout() {
@@ -14,9 +15,8 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#e2f3f5',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 16,
+    justifyContent: 'space-between',
   },
 });

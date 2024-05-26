@@ -1,6 +1,7 @@
 import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
 import { Pressable } from 'react-native';
+
 import { MainButtonProps } from './types';
 
 export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
@@ -21,17 +22,16 @@ export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   };
 
   return (
-    <Pressable onPress={onPressHandler} {...props}>
+    <Pressable
+      onPress={onPressHandler}
+      style={{ transform: 'scale(0.5)', position: 'absolute', bottom: -75 }}
+      {...props}
+    >
       <LottieView
         ref={animation}
-        style={{
-          width: 300,
-          height: 300,
-          backgroundColor: 'transparent',
-        }}
         loop
         renderMode="AUTOMATIC"
-        source={require('../../assets/speaking-animation.json')}
+        source={require('../../assets/recording.json')}
       />
     </Pressable>
   );

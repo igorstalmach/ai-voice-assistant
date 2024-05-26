@@ -1,5 +1,5 @@
-import { useRef } from 'react';
 import * as Speech from 'expo-speech';
+import { useRef } from 'react';
 
 export const useSentenceQueue = () => {
   const sentence = useRef<string>('');
