@@ -18,22 +18,30 @@ export const useRecord = () => {
     const { recording } = await Audio.Recording.createAsync(
       Audio.RecordingOptionsPresets.HIGH_QUALITY
     );
+
     setRecording(recording);
   };
 
-  const stopRecording = async (): Promise<string> => {
+  const stopRecording = async (): Promise<string | undefined> => {
+    if (!recording) {
+      return;
+    }
+
+    await recording.stopAndUnloadAsync();
+    const uri = recording.getURI();
+
+    if (!uri) {
+      return;
+    }
+
     setRecording(undefined);
-    await recording?.stopAndUnloadAsync();
+
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
     });
-    const uri = recording?.getURI();
-    if (!uri) {
-      throw new Error('No uri');
-    }
 
     return uri;
   };
 
-  return { recording, startRecording, stopRecording };
+  return { startRecording, stopRecording };
 };

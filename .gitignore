@@ -62,6 +62,6 @@ xcuserdata
 .env
 
 # Python
-.venv
+venv
 __pycache__
 .ruff_cache
