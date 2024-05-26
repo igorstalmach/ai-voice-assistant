@@ -1,18 +1,14 @@
-from typing import Annotated
-from fastapi import FastAPI, WebSocket, UploadFile, File
 import logging
-from fastapi.middleware.cors import CORSMiddleware
-
-from pydub import AudioSegment
-from pydub.silence import split_on_silence
+import tempfile
 from io import BytesIO
 
+from aiofiles.os import remove
+from fastapi import FastAPI, File, UploadFile, WebSocket
+from fastapi.middleware.cors import CORSMiddleware
+from pydub import AudioSegment
 
-# from .openai.whisper import speech_to_text
-# from .openai.gpt import prompt
-
+from .clarin.transcription import transcribe_audio
 from .sound_processing.remove_silence import remove_silence
-
 
 app = FastAPI()
 
@@ -35,27 +31,37 @@ logger.addHandler(logging.StreamHandler())
 
 @app.post("/transcribe")
 async def transcribe(file: UploadFile = File(...)):
-    # Read the uploaded file into a BytesIO buffer
     file_bytes = await file.read()
     file_buffer = BytesIO(file_bytes)
     file_buffer.seek(0)
 
-    # Load the audio file into pydub
     try:
         audio = AudioSegment.from_file(file_buffer)
     except Exception as e:
         logger.error(e)
         return
 
-    # Remove silence from the audio data
     trimmed_audio = remove_silence(audio)
 
-    # Create a BytesIO buffer for the modified audio
     trimmed_audio_buffer = BytesIO()
     trimmed_audio.export(trimmed_audio_buffer, format="wav")
     trimmed_audio_buffer.seek(0)
 
-    transcription = "Hello, how can I help you today?"
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_file:
+        temp_filename = temp_file.name
+        trimmed_audio.export(temp_file, format="wav")
+
+    try:
+        transcription = await transcribe_audio(temp_filename)
+    except Exception as e:
+        logger.error(e)
+        return
+
+    try:
+        await remove(temp_filename)
+    except Exception as e:
+        logger.error(e)
+        return
 
     return {"transcription": transcription}
 
