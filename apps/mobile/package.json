@@ -33,6 +33,7 @@
     "react-native": "0.73.6",
     "react-native-safe-area-context": "4.8.2",
     "react-native-screens": "~3.29.0",
+    "react-native-svg": "^15.3.0",
     "react-native-toast-message": "^2.2.0",
     "react-native-web": "~0.19.12"
   },

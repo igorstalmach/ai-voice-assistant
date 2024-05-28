@@ -8,10 +8,11 @@ import { sendAudioFile as sendAudioFileWeb } from '../../api/sendAudioFile/web/s
 import { useRecord } from '../../hooks/useRecord';
 import { useSentenceQueue } from '../../hooks/useSentenceQueue';
 import { useWebSocket, ws } from '../../hooks/useWebSocket';
-import { LoadingBox } from '../messages/LoadingBox/LoadingBox';
+import { LoadingBox } from '../messages/LoadingBox';
 import { MainButton } from '../MainButton';
 import { MessageBox } from '../messages/MessageBox';
 import { styles } from './styles';
+import { Settings } from '../Settings';
 
 export const Assistant = () => {
   const { addSentence } = useSentenceQueue();
@@ -95,6 +96,7 @@ export const Assistant = () => {
         onStop={onStopRecording}
         onLongPress={() => Speech.stop()}
       />
+      <Settings />
     </>
   );
 };
