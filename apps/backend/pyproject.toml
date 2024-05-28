@@ -10,9 +10,6 @@ package-mode = false
 python = "^3.11"
 fastapi = "^0.110.0"
 uvicorn = {extras = ["standard"], version = "^0.27.1"}
-websockets = "^12.0"
-python-multipart = "^0.0.9"
-openai = "^1.13.3"
 pydub = "^0.25.1"
 lpmn-client-biz = {version = "^2.1.7", source = "clarin"}
 aiofiles = "^23.2.1"

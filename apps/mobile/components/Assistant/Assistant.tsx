@@ -30,8 +30,8 @@ export const Assistant = () => {
   const onStopRecording = async () => {
     const uri = await stopRecording();
 
-    setTranscription(undefined);
-    setAnswer(undefined);
+    setTranscription('');
+    setAnswer('');
     setIsTranscriptionLoading(true);
 
     if (!uri) {
@@ -65,7 +65,7 @@ export const Assistant = () => {
     setTranscription(transcription);
 
     setIsAnswerLoading(true);
-    ws.send(transcription);
+    ws.send(JSON.stringify({ model: 'openchat', transcription: transcription }));
   };
 
   return (

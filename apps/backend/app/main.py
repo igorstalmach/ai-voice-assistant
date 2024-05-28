@@ -1,12 +1,14 @@
+import json
 import logging
 import tempfile
 from io import BytesIO
 
 from aiofiles.os import remove
-from fastapi import FastAPI, File, UploadFile, WebSocket
+from fastapi import FastAPI, File, HTTPException, UploadFile, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from pydub import AudioSegment
 
+from .clarin.llm_query import llm_query
 from .clarin.transcription import transcribe_audio
 from .sound_processing.remove_silence import remove_silence
 
@@ -39,7 +41,9 @@ async def transcribe(file: UploadFile = File(...)):
         audio = AudioSegment.from_file(file_buffer)
     except Exception as e:
         logger.error(e)
-        return
+        raise HTTPException(
+            status_code=500, detail="Internal server error. Please try again later."
+        )
 
     trimmed_audio = remove_silence(audio)
 
@@ -55,7 +59,9 @@ async def transcribe(file: UploadFile = File(...)):
         transcription = await transcribe_audio(temp_filename)
     except Exception as e:
         logger.error(e)
-        return
+        raise HTTPException(
+            status_code=500, detail="Internal server error. Please try again later."
+        )
 
     try:
         await remove(temp_filename)
@@ -70,15 +76,23 @@ async def transcribe(file: UploadFile = File(...)):
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
 
-    await websocket.send_text("It works")
+    while True:
+        try:
+            request = await websocket.receive_text()
+            request = json.loads(request)
 
-    # while True:
-    #     try:
-    #         text = await websocket.receive_text()
-    #         for token in prompt(text):
-    #             if content := token.choices[0].delta.content:
-    #                 await websocket.send_text(content)
-    #     except Exception as e:
-    #         logger.error(e)
-    #         await websocket.send_text("Unable to process request. Please try again later.")
-    #         break
+            transcription = request.get("transcription")
+            model = request.get("model")
+
+            if not transcription or not model:
+                raise HTTPException(status_code=400, detail="Invalid request format")
+
+            response = await llm_query(request.query, request.model)
+
+            for token in response:
+                await websocket.send_text(token)
+        except Exception as e:
+            logger.error(e)
+            raise HTTPException(
+                status_code=500, detail="Internal server error. Please try again later."
+            )
