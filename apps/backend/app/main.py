@@ -33,6 +33,13 @@ logger.addHandler(logging.StreamHandler())
 
 @app.post("/transcribe")
 async def transcribe(file: UploadFile = File(...)):
+    """
+    Endpoint for transcribing audio files.
+
+    :param file: Received audio file.
+    :return: Transcription of the audio file.
+    """
+
     file_bytes = await file.read()
     file_buffer = BytesIO(file_bytes)
     file_buffer.seek(0)
@@ -74,6 +81,13 @@ async def transcribe(file: UploadFile = File(...)):
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    """
+    Websocket endpoint for querying the LLM model.
+
+    :param websocket:
+    :return:
+    """
+
     await websocket.accept()
 
     while True:

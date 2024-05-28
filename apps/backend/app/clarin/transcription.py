@@ -6,6 +6,13 @@ from .client import connection
 
 
 async def transcribe_audio(audio_path: str) -> str:
+    """
+    Transcribe audio file to text using Whisper ASR model.
+
+    :param audio_path: Path to the automatically generated temporary audio file.
+    :return: A string containing the transcribed text.
+    """
+
     task_setup = [{"whisper": {"lang": "pl"}}]
     task = Task(task_setup, connection)
 

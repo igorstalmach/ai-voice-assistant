@@ -1,8 +1,9 @@
 import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { MainButtonProps } from './types';
+import { styles } from './styles';
 
 export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   const animation = useRef<LottieView | null>(null);
@@ -22,17 +23,15 @@ export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   };
 
   return (
-    <Pressable
-      onPress={onPressHandler}
-      style={{ transform: 'scale(0.5)', position: 'absolute', bottom: -75 }}
-      {...props}
-    >
-      <LottieView
-        ref={animation}
-        loop
-        renderMode="AUTOMATIC"
-        source={require('../../assets/recording.json')}
-      />
-    </Pressable>
+    <View style={styles.container}>
+      <Pressable onPress={onPressHandler} style={styles.button} {...props}>
+        <LottieView
+          ref={animation}
+          loop
+          renderMode="AUTOMATIC"
+          source={require('../../assets/recording.json')}
+        />
+      </Pressable>
+    </View>
   );
 };
