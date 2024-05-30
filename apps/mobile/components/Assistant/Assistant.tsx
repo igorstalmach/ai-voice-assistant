@@ -15,7 +15,7 @@ import { styles } from './styles';
 import { Settings } from '../Settings';
 
 export const Assistant = () => {
-  const { addSentence } = useSentenceQueue();
+  const { addSentence, clearSentence } = useSentenceQueue();
   const { stopRecording, startRecording } = useRecord();
 
   const [isTranscriptionLoading, setIsTranscriptionLoading] = useState<boolean>(false);
@@ -26,15 +26,17 @@ export const Assistant = () => {
   useWebSocket((event) => {
     setIsAnswerLoading(false);
     addSentence(event.data);
-    setAnswer(answer + event.data);
+    setAnswer((prevAnswer) => prevAnswer + event.data);
   });
 
   const onStopRecording = async () => {
     const uri = await stopRecording();
 
+    clearSentence();
     setTranscription('');
     setAnswer('');
     setIsTranscriptionLoading(true);
+    setIsAnswerLoading(false);
 
     if (!uri) {
       Toast.show({

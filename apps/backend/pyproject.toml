@@ -13,6 +13,7 @@ uvicorn = {extras = ["standard"], version = "^0.27.1"}
 pydub = "^0.25.1"
 lpmn-client-biz = {version = "^2.1.7", source = "clarin"}
 aiofiles = "^23.2.1"
+python-multipart = "^0.0.9"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.3.2"

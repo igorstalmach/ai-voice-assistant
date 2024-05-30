@@ -7,5 +7,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     rowGap: 8,
     paddingTop: 40,
+    overflow: 'scroll',
   },
 });

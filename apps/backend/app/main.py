@@ -90,23 +90,42 @@ async def websocket_endpoint(websocket: WebSocket):
 
     await websocket.accept()
 
-    while True:
-        try:
-            request = await websocket.receive_text()
-            request = json.loads(request)
+    try:
+        while True:
+            try:
+                request = await websocket.receive_text()
+                request = json.loads(request)
 
-            transcription = request.get("transcription")
-            model = request.get("model")
+                transcription = request.get("transcription")
+                model = request.get("model")
 
-            if not transcription or not model:
-                raise HTTPException(status_code=400, detail="Invalid request format")
+                if not transcription or not model:
+                    raise HTTPException(
+                        status_code=400, detail="Invalid request format"
+                    )
 
-            response = await llm_query(request.query, request.model)
+                response = await llm_query(transcription, model)
 
-            for token in response:
-                await websocket.send_text(token)
-        except Exception as e:
-            logger.error(e)
-            raise HTTPException(
-                status_code=500, detail="Internal server error. Please try again later."
-            )
+                for token in response:
+                    token = token[5:]
+                    parsed_token = json.loads(token)
+
+                    if (
+                        content := parsed_token.get("choices")[0]
+                        .get("delta")
+                        .get("content")
+                    ):
+                        await websocket.send_text(content)
+            except Exception as e:
+                logger.error(e)
+                raise HTTPException(
+                    status_code=500,
+                    detail="Internal server error. Please try again later.",
+                )
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=500, detail="Internal server error. Please try again later."
+        )
+    finally:
+        await websocket.close()
