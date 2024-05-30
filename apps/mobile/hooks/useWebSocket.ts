@@ -25,14 +25,6 @@ export const useWebSocket = (onMessage: (event: MessageEvent<string>) => void) =
   useEffect(() => {
     ws.onmessage = onMessage;
 
-    ws.onopen = () => {
-      Toast.show({
-        type: 'success',
-        text1: 'Connection established',
-        text2: 'Successfully connected to the server',
-      });
-    };
-
     ws.onerror = () => {
       Toast.show({
         type: 'error',

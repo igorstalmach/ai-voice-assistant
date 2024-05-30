@@ -8,31 +8,35 @@ import { sendAudioFile as sendAudioFileWeb } from '../../api/sendAudioFile/web/s
 import { useRecord } from '../../hooks/useRecord';
 import { useSentenceQueue } from '../../hooks/useSentenceQueue';
 import { useWebSocket, ws } from '../../hooks/useWebSocket';
-import { LoadingBox } from '../LoadingBox/LoadingBox';
+import { LoadingBox } from '../messages/LoadingBox';
 import { MainButton } from '../MainButton';
-import { MessageBox } from '../MessageBox';
+import { MessageBox } from '../messages/MessageBox';
+import { styles } from './styles';
+import { Settings } from '../Settings';
 
 export const Assistant = () => {
-  const { addSentence } = useSentenceQueue();
+  const { addSentence, clearSentence } = useSentenceQueue();
   const { stopRecording, startRecording } = useRecord();
 
   const [isTranscriptionLoading, setIsTranscriptionLoading] = useState<boolean>(false);
-  const [transcription, setTranscription] = useState<string>();
+  const [transcription, setTranscription] = useState<string>('');
   const [isAnswerLoading, setIsAnswerLoading] = useState<boolean>(false);
-  const [answer, setAnswer] = useState<string>();
+  const [answer, setAnswer] = useState<string>('');
 
   useWebSocket((event) => {
     setIsAnswerLoading(false);
     addSentence(event.data);
-    setAnswer(answer + event.data);
+    setAnswer((prevAnswer) => prevAnswer + event.data);
   });
 
   const onStopRecording = async () => {
     const uri = await stopRecording();
 
-    setTranscription(undefined);
-    setAnswer(undefined);
+    clearSentence();
+    setTranscription('');
+    setAnswer('');
     setIsTranscriptionLoading(true);
+    setIsAnswerLoading(false);
 
     if (!uri) {
       Toast.show({
@@ -65,31 +69,28 @@ export const Assistant = () => {
     setTranscription(transcription);
 
     setIsAnswerLoading(true);
-    ws.send(transcription);
+    ws.send(JSON.stringify({ model: 'openchat', transcription: transcription }));
   };
 
   return (
     <>
-      <View
-        style={{
-          width: '100%',
-          flex: 1,
-          alignItems: 'center',
-          rowGap: 8,
-          paddingTop: 40,
-        }}
-      >
+      <View style={styles.container}>
         {isTranscriptionLoading ? (
-          <LoadingBox color="#aaccdb" />
+          <LoadingBox color="#a8dde7" />
         ) : (
           transcription && (
-            <MessageBox message={transcription} color="#aaccdb" textColor="#113441" />
+            <MessageBox
+              message={transcription}
+              color="#a8dde7"
+              textColor="#113441"
+              textAlignment="right"
+            />
           )
         )}
         {isAnswerLoading ? (
-          <LoadingBox color="#74d2f7" />
+          <LoadingBox color="#7dc0de" />
         ) : (
-          answer && <MessageBox message={answer} color="#74d2f7" textColor="#003545" />
+          answer && <MessageBox message={answer} color="#7dc0de" textColor="#003545" />
         )}
       </View>
       <MainButton
@@ -97,6 +98,7 @@ export const Assistant = () => {
         onStop={onStopRecording}
         onLongPress={() => Speech.stop()}
       />
+      <Settings />
     </>
   );
 };
