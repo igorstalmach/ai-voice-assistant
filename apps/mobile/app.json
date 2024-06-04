@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
-    "version": "1.0.0",
+    "name": "Voice Assistant",
+    "slug": "VoiceAssistant",
+    "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon-32x32.png",
     "userInterfaceStyle": "light",
-    "scheme": "pl-tts-gpt",
+    "scheme": "voiceassistant",
     "splash": {
       "image": "./assets/favicon-32x32.png",
       "resizeMode": "contain",

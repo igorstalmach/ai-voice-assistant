@@ -1,10 +1,12 @@
-import { SettingsIcon } from './SettingsIcon';
-import { Pressable } from 'react-native';
-import { styles } from './styles';
 import { useState } from 'react';
-import { SettingsModal } from './SettingsModal';
+import { Pressable } from 'react-native';
 
-export const Settings = () => {
+import { SettingsIcon } from './SettingsIcon';
+import { SettingsModal } from './SettingsModal';
+import { styles } from './styles';
+import { SettingsProps } from './types';
+
+export const Settings = ({ selectedOption, setSelectedOption }: SettingsProps) => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 
   return (
@@ -12,7 +14,13 @@ export const Settings = () => {
       <Pressable style={styles.container} onPress={() => setIsModalVisible(true)}>
         <SettingsIcon />
       </Pressable>
-      {isModalVisible && <SettingsModal setIsModalVisible={setIsModalVisible} />}
+      {isModalVisible && (
+        <SettingsModal
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+          setIsModalVisible={setIsModalVisible}
+        />
+      )}
     </>
   );
 };

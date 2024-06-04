@@ -1,9 +1,9 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
-import { BoxProps } from './types';
 import { styles } from './styles';
+import { BoxProps } from './types';
 
 export const Box = ({ children, color }: BoxProps) => {
   return (
