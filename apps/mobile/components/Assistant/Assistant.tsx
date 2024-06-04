@@ -8,11 +8,12 @@ import { sendAudioFile as sendAudioFileWeb } from '../../api/sendAudioFile/web/s
 import { useRecord } from '../../hooks/useRecord';
 import { useSentenceQueue } from '../../hooks/useSentenceQueue';
 import { useWebSocket, ws } from '../../hooks/useWebSocket';
-import { LoadingBox } from '../messages/LoadingBox';
+import { availableModels } from '../../types/models';
 import { MainButton } from '../MainButton';
+import { LoadingBox } from '../messages/LoadingBox';
 import { MessageBox } from '../messages/MessageBox';
-import { styles } from './styles';
 import { Settings } from '../Settings';
+import { styles } from './styles';
 
 export const Assistant = () => {
   const { addSentence, clearSentence } = useSentenceQueue();
@@ -22,6 +23,7 @@ export const Assistant = () => {
   const [transcription, setTranscription] = useState<string>('');
   const [isAnswerLoading, setIsAnswerLoading] = useState<boolean>(false);
   const [answer, setAnswer] = useState<string>('');
+  const [selectedModel, setSelectedModel] = useState<string>(availableModels[0]);
 
   useWebSocket((event) => {
     setIsAnswerLoading(false);
@@ -33,6 +35,7 @@ export const Assistant = () => {
     const uri = await stopRecording();
 
     clearSentence();
+    await Speech.stop();
     setTranscription('');
     setAnswer('');
     setIsTranscriptionLoading(true);
@@ -69,7 +72,7 @@ export const Assistant = () => {
     setTranscription(transcription);
 
     setIsAnswerLoading(true);
-    ws.send(JSON.stringify({ model: 'openchat', transcription: transcription }));
+    ws.send(JSON.stringify({ model: selectedModel, transcription }));
   };
 
   return (
@@ -98,7 +101,7 @@ export const Assistant = () => {
         onStop={onStopRecording}
         onLongPress={() => Speech.stop()}
       />
-      <Settings />
+      <Settings selectedOption={selectedModel} setSelectedOption={setSelectedModel} />
     </>
   );
 };

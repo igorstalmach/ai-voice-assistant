@@ -2,8 +2,8 @@ import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
 import { Pressable, View } from 'react-native';
 
-import { MainButtonProps } from './types';
 import { styles } from './styles';
+import { MainButtonProps } from './types';
 
 export const MainButton = ({ onStart, onStop, ...props }: MainButtonProps) => {
   const animation = useRef<LottieView | null>(null);
