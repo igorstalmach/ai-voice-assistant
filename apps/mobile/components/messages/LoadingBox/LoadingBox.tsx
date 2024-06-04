@@ -2,9 +2,9 @@ import LottieView from 'lottie-react-native';
 import { useRef } from 'react';
 import { View } from 'react-native';
 
+import { Box } from '../Box';
 import { styles } from './styles';
 import { LoadingBoxProps } from './types';
-import { Box } from '../Box';
 
 export const LoadingBox = ({ color }: LoadingBoxProps) => {
   const animation = useRef<LottieView | null>(null);

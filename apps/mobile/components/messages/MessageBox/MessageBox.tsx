@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import { MessageBoxProps } from './types';
 import { Box } from '../Box';
+import { MessageBoxProps } from './types';
 
 export const MessageBox = ({
   message,

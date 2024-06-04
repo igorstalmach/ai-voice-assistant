@@ -6,5 +6,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+    'import/order': 'off',
   },
 };

@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Platform, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-import { styles } from './styles';
 import { sendAudioFile as sendAudioFileMobile } from '../../api/sendAudioFile/mobile/sendAudioFile';
 import { sendAudioFile as sendAudioFileWeb } from '../../api/sendAudioFile/web/sendAudioFile';
 import { useRecord } from '../../hooks/useRecord';
@@ -14,6 +13,7 @@ import { MainButton } from '../MainButton';
 import { LoadingBox } from '../messages/LoadingBox';
 import { MessageBox } from '../messages/MessageBox';
 import { Settings } from '../Settings';
+import { styles } from './styles';
 
 export const Assistant = () => {
   const { addSentence, clearSentence } = useSentenceQueue();

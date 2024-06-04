@@ -1,8 +1,8 @@
 import { Modal, Pressable, Text, View } from 'react-native';
 
-import { styles } from './styles';
 import { availableModels } from '../../../types/models';
 import { RadioButtons } from '../RadioButtons';
+import { styles } from './styles';
 import { SettingsModalProps } from './types';
 
 export const SettingsModal = ({
