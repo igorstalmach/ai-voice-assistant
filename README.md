@@ -19,7 +19,7 @@ After the services are up and running, you can access the frontend service by na
 ### Backend 
 
 > [!NOTE]
-> In order to start the backend service, you need to set the `POETRY_OPENAI_API_KEY` environment variable with your OpenAI key. Please refer to provided `.env.example` file for more details. A valid environment file should be named `.env` and placed in the root directory of the project.
+> In order to start the backend service, you need to set the `CLARIN_API_KEY` environment variable with your Clarin key. Please refer to provided `.env.example` file for more details. A valid environment file should be named `.env` and placed in the root directory of the project.
 
 - Built with [FastAPI](https://fastapi.tiangolo.com/) and Python 3.12.
 - The service is available on port `8000`.
@@ -31,18 +31,3 @@ After the services are up and running, you can access the frontend service by na
 
 - Built with [Expo](https://docs.expo.dev/) and TypeScript.
 - The service is available on port `8081`.
-
-Available polish voices in the [expo-speech](https://docs.expo.dev/versions/latest/sdk/localization/) package:
-
-- pl-pl-x-oda-local,
-- pl-pl-x-bmg-local,
-- pl-pl-x-oda-network,
-- pl-pl-x-afb-network,
-- pl-pl-x-zfg-network,
-- pl-pl-x-jmk-network,
-- pl-pl-x-bmg-network,
-- pl-pl-x-zfg-local,
-- pl-pl-x-jmk-local,
-- pl-pl-x-afb-local,
-- pl-PL-language'
-
