@@ -4,16 +4,18 @@ services:
     image: pl-tts-gpt/api
     ports:
       - '8000:8000'
-    volumes:
-      - ./apps/backend:/api:ro
+#    Uncomment when mounting the local directory
+#    volumes:
+#      - ./apps/backend:/api:ro
     env_file: apps/backend/.env
   mobile:
     build: ./apps/mobile
     image: pl-tts-gpt/mobile
     ports:
       - '8081:8081'
-    volumes:
-      - ./apps/mobile:/mobile:ro
+#    Uncomment when mounting the local directory
+#    volumes:
+#      - ./apps/mobile:/mobile:ro
     env_file: apps/mobile/.env
     depends_on:
       - api
