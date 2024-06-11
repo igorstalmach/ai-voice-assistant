@@ -28,6 +28,8 @@ After the services are up and running, you can access the frontend service by na
 > [!NOTE]
 > In order to start the frontend service, you need to set the `EXPO_PUBLIC_API_URL` environment variable with the address of your running backend service instance. Please refer to provided `.env.example` file for more details. A valid environment file should be named `.env` and placed in the root directory of the project.
 
+> [!WARNING]
+> Currently, the web browser experience is only supported on Chrome version 125 and above.
 
 - Built with [Expo](https://docs.expo.dev/) and TypeScript.
 - The service is available on port `8081`.
