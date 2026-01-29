@@ -40,7 +40,7 @@
     "@babel/core": "^7.24.6",
     "@babel/runtime": "^7.24.6",
     "@types/react": "~18.2.79",
-    "eslint": "^8.57.0",
+    "eslint": "^9.26.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-universe": "^12.1.0",
     "eslint-plugin-prettier": "^5.1.3",
